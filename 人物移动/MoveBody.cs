@@ -62,8 +62,7 @@ namespace 人物移动
             //根据输入的键来更新移动指示
             if (key.KeyCode == Keys.Up)
             {
-                bool nextUp = false;
-                nextUp = key.State == KeyState.KeyUp ? false : true;
+                bool nextUp = key.State == KeyState.KeyUp ? false : true;
                 if (nextUp != currUp)
                 {
                     currUp = nextUp;
@@ -71,8 +70,7 @@ namespace 人物移动
             }
             else if (key.KeyCode == Keys.Down)
             {
-                bool nextDown = false;
-                nextDown = key.State == KeyState.KeyUp ? false : true;
+                bool nextDown = key.State == KeyState.KeyUp ? false : true;
                 if (nextDown != currDown)
                 {
                     currDown = nextDown;
@@ -80,8 +78,7 @@ namespace 人物移动
             }
             else if (key.KeyCode == Keys.Left)
             {
-                bool nextLeft = false;
-                nextLeft = key.State == KeyState.KeyUp ? false : true;
+                bool nextLeft = key.State == KeyState.KeyUp ? false : true;
                 if (nextLeft != currLeft)
                 {
                     currLeft = nextLeft;
@@ -89,8 +86,7 @@ namespace 人物移动
             }
             else if (key.KeyCode == Keys.Right)
             {
-                bool nextRight = false;
-                nextRight = key.State == KeyState.KeyUp ? false : true;
+                bool nextRight = key.State == KeyState.KeyUp ? false : true;
                 if (nextRight != currRight)
                 {
                     currRight = nextRight;
