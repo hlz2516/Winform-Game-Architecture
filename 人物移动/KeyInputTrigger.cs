@@ -59,5 +59,13 @@ namespace 人物移动
                 keyActions[key] = new List<Action<KeyWrapper>> { action };
             }
         }
+
+        public void Register(Action<KeyWrapper> action,params Keys[] keys)
+        {
+            foreach (var key in keys)
+            {
+                Register(key, action);
+            }
+        }
     }
 }

@@ -35,10 +35,11 @@ namespace 人物移动
             this.Controls.Add(body);
             body.Show();
 
-            KeyInputTrigger.Instance.Register(Keys.Up, body.GetCurrentKeyInput);
-            KeyInputTrigger.Instance.Register(Keys.Down, body.GetCurrentKeyInput);
-            KeyInputTrigger.Instance.Register(Keys.Left, body.GetCurrentKeyInput);
-            KeyInputTrigger.Instance.Register(Keys.Right, body.GetCurrentKeyInput);
+            //KeyInputTrigger.Instance.Register(Keys.Up, body.GetCurrentKeyInput);
+            //KeyInputTrigger.Instance.Register(Keys.Down, body.GetCurrentKeyInput);
+            //KeyInputTrigger.Instance.Register(Keys.Left, body.GetCurrentKeyInput);
+            //KeyInputTrigger.Instance.Register(Keys.Right, body.GetCurrentKeyInput);
+            KeyInputTrigger.Instance.Register(body.GetCurrentKeyInput,Keys.Up,Keys.Down,Keys.Left,Keys.Right);
         }
 
 

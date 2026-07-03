@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace 人物移动
 {
-    public class MoveBody : Control
+    public class MoveBody : Control,IRecvKeyInput
     {
         readonly int speed = 4;
         readonly Timer timer;
