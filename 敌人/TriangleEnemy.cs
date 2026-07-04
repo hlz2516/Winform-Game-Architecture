@@ -24,7 +24,7 @@ namespace 敌人
                 }
             }
         }
-        public float MoveSpeed { get; set; } = 10;
+        public float MoveSpeed { get; set; } = 4;
         private float moveDirection;
         public float MoveDirection
         {
@@ -46,10 +46,18 @@ namespace 敌人
 
         public TriangleEnemy()
         {
+            // 开启窗体双缓冲全套
+            SetStyle(
+                ControlStyles.UserPaint |
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.DoubleBuffer,
+                true);
+            UpdateStyles(); // 立即生效样式
+
             Width = Height = 100;  //默认工作区大小
             originVertexes = new GraphicsPath();
             rotatedVertexes = new GraphicsPath();
-            rotateTimer.Interval = 100;
+            rotateTimer.Interval = 20;
             rotateTimer.Tick += Move_Logic;
         }
 
