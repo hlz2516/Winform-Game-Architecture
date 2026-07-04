@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "古月迷宫2.0", "古月�
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "人物移动", "人物移动\人物移动.csproj", "{98538F51-2794-48A6-84EE-C8D5DDA61318}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "敌人", "敌人\敌人.csproj", "{6D8E3233-A88D-4F81-AE72-0F22DBAB78D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{98538F51-2794-48A6-84EE-C8D5DDA61318}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98538F51-2794-48A6-84EE-C8D5DDA61318}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98538F51-2794-48A6-84EE-C8D5DDA61318}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D8E3233-A88D-4F81-AE72-0F22DBAB78D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D8E3233-A88D-4F81-AE72-0F22DBAB78D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D8E3233-A88D-4F81-AE72-0F22DBAB78D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D8E3233-A88D-4F81-AE72-0F22DBAB78D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
