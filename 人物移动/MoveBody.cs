@@ -101,12 +101,4 @@ namespace 人物移动
             }
         }
     }
-
-    public enum Direction 
-    { 
-        Left, 
-        Right, 
-        Up,
-        Down
-    }
 }

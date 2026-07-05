@@ -1,9 +1,8 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CoreLib
@@ -12,7 +11,7 @@ namespace CoreLib
     {
         public static KeyInputTrigger Instance { get; } = new KeyInputTrigger();
 
-        public NonRepetitiveAdjQueue<KeyWrapper> InputKeys { get; } = new NonRepetitiveAdjQueue<KeyWrapper>(); 
+        private ConcurrentQueue<KeyWrapper> inputKeys = new ConcurrentQueue<KeyWrapper>(); 
         //对于同一个键，可以支持绑定多个action
         private Dictionary<Keys, List<Action<KeyWrapper>>> keyActions = new Dictionary<Keys, List<Action<KeyWrapper>>>();
         private Thread keyProcessThread;
@@ -28,9 +27,9 @@ namespace CoreLib
             while (true)
             {
                 int popCnt = 0;
-                while (!InputKeys.IsEmpty && popCnt < 10)
+                while (!inputKeys.IsEmpty && popCnt < 10)
                 {
-                    InputKeys.TryDequeue(out var key);
+                    inputKeys.TryDequeue(out var key);
                     if (key != null)
                     {
                         if (keyActions.ContainsKey(key.KeyCode))
@@ -46,10 +45,21 @@ namespace CoreLib
                 Thread.Sleep(30);
             }
         }
-
+        /// <summary>
+        /// 如果上一个入队的元素跟当前要入队的元素相同，那么不入
+        /// </summary>
+        /// <param name="key"></param>
         public void InputKey(KeyWrapper key)
         {
-            InputKeys.Enqueue(key);
+            //inputKeys.Enqueue(key);
+            if (inputKeys.Count == 0)
+            {
+                inputKeys.Enqueue(key);
+                return;
+            }
+            if (inputKeys.Last().Equals(key))
+                return;
+            inputKeys.Enqueue(key);
         }
 
         public void Register(Keys key,Action<KeyWrapper> action)

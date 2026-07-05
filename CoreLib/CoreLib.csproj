@@ -51,7 +51,6 @@
     <Compile Include="Interfaces\IRecvKeyInput.cs" />
     <Compile Include="KeyInputTrigger.cs" />
     <Compile Include="KeyWrapper.cs" />
-    <Compile Include="NonRepetitiveAdjQueue.cs" />
     <Compile Include="PointFExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TrigonometricFunctions.cs" />

@@ -43,7 +43,7 @@ namespace 人物移动
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
         {
-            KeyInputTrigger.Instance.InputKeys.Enqueue(new KeyWrapper(e,KeyState.KeyPressed));
+            KeyInputTrigger.Instance.InputKey(new KeyWrapper(e,KeyState.KeyPressed));
         }
 
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
@@ -53,7 +53,7 @@ namespace 人物移动
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
         {
-            KeyInputTrigger.Instance.InputKeys.Enqueue(new KeyWrapper(e, KeyState.KeyUp));
+            KeyInputTrigger.Instance.InputKey(new KeyWrapper(e, KeyState.KeyUp));
         }
 
         protected override bool ProcessDialogKey(Keys keyData)
