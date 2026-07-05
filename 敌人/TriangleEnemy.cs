@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CoreLib;
+using CoreLib.Interfaces;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
@@ -6,7 +8,7 @@ using System.Windows.Forms;
 
 namespace 敌人
 {
-    public class TriangleEnemy : Control,IRotate,IMove
+    public class TriangleEnemy : BaseObject,IRotate,IMove
     {
         PointF rotateCenter; //一旦确定后不再改变
         Timer rotateTimer = new Timer();
@@ -46,15 +48,6 @@ namespace 敌人
 
         public TriangleEnemy()
         {
-            // 开启窗体双缓冲全套
-            SetStyle(
-                ControlStyles.UserPaint |
-                ControlStyles.AllPaintingInWmPaint |
-                ControlStyles.DoubleBuffer,
-                true);
-            UpdateStyles(); // 立即生效样式
-
-            Width = Height = 100;  //默认工作区大小
             originVertexes = new GraphicsPath();
             rotatedVertexes = new GraphicsPath();
             rotateTimer.Interval = 20;
@@ -99,6 +92,7 @@ namespace 敌人
             var realPos = new Point((int)Math.Round(nextPosF.X), (int)Math.Round(nextPosF.Y));
             this.Left = realPos.X;
             this.Top = realPos.Y;
+            this.Invalidate(this.Region);
             currPosF = nextPosF;
         }
 

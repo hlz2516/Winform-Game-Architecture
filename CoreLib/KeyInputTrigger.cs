@@ -6,7 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace 人物移动
+namespace CoreLib
 {
     public class KeyInputTrigger
     {
@@ -45,6 +45,11 @@ namespace 人物移动
                 }
                 Thread.Sleep(30);
             }
+        }
+
+        public void InputKey(KeyWrapper key)
+        {
+            InputKeys.Enqueue(key);
         }
 
         public void Register(Keys key,Action<KeyWrapper> action)

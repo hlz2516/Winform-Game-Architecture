@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing.Drawing2D;
+﻿using CoreLib;
+using CoreLib.Interfaces;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Drawing.Drawing2D;
 using System.Windows.Forms;
-using System.Diagnostics;
 
 namespace 人物移动
 {
-    public class MoveBody : Control,IRecvKeyInput
+    public class MoveBody : BaseObject,IRecvKeyInput
     {
-        readonly int speed = 4;
+        readonly int speed = 5;
         readonly Timer timer;
 
         volatile bool currLeft = false; //false表示取消这一方向的移动,true表示要移动
@@ -28,7 +25,7 @@ namespace 人物移动
         public MoveBody()
         {
             timer = new Timer();
-            timer.Interval = 100;
+            timer.Interval = 30;
             timer.Tick += Timer_Tick;
             timer.Start();
         }

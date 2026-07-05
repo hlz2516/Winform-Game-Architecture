@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace 人物移动
+namespace CoreLib
 {
     /// <summary>
     /// 不会有相邻重复的元素的队列

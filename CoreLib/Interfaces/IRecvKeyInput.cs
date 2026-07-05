@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace 人物移动
+namespace CoreLib.Interfaces
 {
     public interface IRecvKeyInput
     {

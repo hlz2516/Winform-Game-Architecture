@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using CoreLib;
+using System;
 using System.Windows.Forms;
 
 namespace 人物移动
@@ -28,7 +21,6 @@ namespace 人物移动
 
             body = new MoveBody();
             body.Name = "body";
-            body.Width = body.Height = 100;
             body.Left = 200;
             body.Top = 200;
             body.SetRegion();
