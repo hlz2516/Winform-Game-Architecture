@@ -7,7 +7,7 @@ namespace CoreLib.Interfaces
     public interface IRegion
     {
         GraphicsPath OriginVertexes { get; }
-        float ScaleInfactor { get; set; }
+        float ScaleFactor { get; set; }
         /// <summary>
         /// 形状的逻辑定义
         /// 默认正面朝下

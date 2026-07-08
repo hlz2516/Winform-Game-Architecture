@@ -13,6 +13,7 @@ namespace 碰撞检测
         Wall wall2;
         MoveBody body;
         TriangleEnemy triangle;
+        DrillBitEnemy drillbit;
         List<Control> controls = new List<Control>();
 
         public Form1()
@@ -53,6 +54,16 @@ namespace 碰撞检测
             triangle.StartRotate();
             triangle.Show();
             controls.Add(triangle);
+
+            drillbit = new DrillBitEnemy();
+            drillbit.Name = "drillbit";
+            drillbit.Left = 200;
+            drillbit.Top = 100;
+            drillbit.SetRegion();
+            this.Controls.Add(drillbit);
+            drillbit.StartMove();
+            drillbit.Show();
+            controls.Add(drillbit);
 
             body = new MoveBody();
             body.Name = "body";

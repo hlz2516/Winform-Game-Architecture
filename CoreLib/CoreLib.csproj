@@ -53,6 +53,9 @@
     <Compile Include="KeyWrapper.cs" />
     <Compile Include="PointFExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StandardMoveObject.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="TrigonometricFunctions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -46,6 +46,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DrillBitEnemy.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="TriangleEnemy.cs">
       <SubType>Component</SubType>
     </Compile>
