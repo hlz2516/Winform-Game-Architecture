@@ -10,7 +10,7 @@ using System.Windows.Forms;
 
 namespace 敌人
 {
-    public class DrillBitEnemy : StandardMoveObject
+    public class DrillBitEnemy : PolygonMoveObject
     {
         private Timer moveTimer;
 
@@ -55,7 +55,7 @@ namespace 敌人
             points[1] = new PointF(this.Width * ScaleFactor, 0);
             points[2] = new PointF(this.Width * ScaleFactor, this.Height * ScaleFactor / 2);
             points[3] = new PointF(this.Width * ScaleFactor / 2, this.Height * ScaleFactor);
-            points[4] = new PointF(0, this.Width * ScaleFactor/2);
+            points[4] = new PointF(0, this.Width * ScaleFactor / 2);
             SetRegionInner(points);
         }
     }

@@ -11,9 +11,9 @@ using System.Windows.Forms;
 namespace CoreLib
 {
     /// <summary>
-    /// 实现了标准移动的物体，外部只需要设置基本形状路径即可
+    /// 实现了标准移动的物体，外部只需要设置基本形状路径即可（只支持多边形）
     /// </summary>
-    public abstract class StandardMoveObject : BaseObject,IMove
+    public abstract class PolygonMoveObject : BaseObject,IMove
     {
         PointF rotateCenter; //一旦确定后不再改变
         public float ScaleFactor { get; set; } = 1;
@@ -49,7 +49,7 @@ namespace CoreLib
         private PointF currPosF;
         public PointF CurrPosF => currPosF;
 
-        public StandardMoveObject()
+        public PolygonMoveObject()
         {
             originVertexes = new GraphicsPath();
             rotatedVertexes = new GraphicsPath();
@@ -79,7 +79,7 @@ namespace CoreLib
         }
 
         /// <summary>
-        /// 该类必须输入形状路径，以实现Region设置，旋转和移动
+        /// 实现时必须调用SetRegionInner输入形状路径，以实现Region设置，旋转和移动
         /// </summary>
         public abstract void SetRegion();
         //{
