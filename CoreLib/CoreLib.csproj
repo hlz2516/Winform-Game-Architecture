@@ -47,7 +47,10 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CollisionHelper.cs" />
-    <Compile Include="EllipseMoveObject.cs" />
+    <Compile Include="CurveHelper.cs" />
+    <Compile Include="EllipseMoveObject.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Interfaces\IMove.cs" />
     <Compile Include="Interfaces\IRecvKeyInput.cs" />
     <Compile Include="KeyInputTrigger.cs" />

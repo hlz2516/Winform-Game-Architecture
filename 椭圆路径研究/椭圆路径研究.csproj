@@ -59,6 +59,18 @@
     <Compile Include="FrmCtrlPntScaleCmp.Designer.cs">
       <DependentUpon>FrmCtrlPntScaleCmp.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmDrawEllipse.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmDrawEllipse.Designer.cs">
+      <DependentUpon>FrmDrawEllipse.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmEncapsulationTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmEncapsulationTest.Designer.cs">
+      <DependentUpon>FrmEncapsulationTest.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmQuarterCircle.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,9 +87,21 @@
     <EmbeddedResource Include="FrmCtrlPntScaleCmp.resx">
       <DependentUpon>FrmCtrlPntScaleCmp.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="FrmDrawEllipse.resx">
+      <DependentUpon>FrmDrawEllipse.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmEncapsulationTest.resx">
+      <DependentUpon>FrmEncapsulationTest.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="FrmQuarterCircle.resx">
       <DependentUpon>FrmQuarterCircle.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CoreLib\CoreLib.csproj">
+      <Project>{e6470789-126d-43c1-a8fd-1c0f4c45b304}</Project>
+      <Name>CoreLib</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

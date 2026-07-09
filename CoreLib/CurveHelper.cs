@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace 椭圆路径研究
+namespace CoreLib
 {
     public class ArcBezierPointsHelper
     {
-        public static (PointF,PointF,PointF,PointF) GetArcBezierPoints(
+        public static BezierPoints GetArcBezierPoints(
             PointF center, float r, float startRad, float thetaRad)
         {
             // 通用k系数
@@ -42,7 +38,7 @@ namespace 椭圆路径研究
             float y2 = y3 + L * ty3;
             var p2 = new PointF(x2, y2);
 
-            return (p0, p1, p2, p3);
+            return new BezierPoints(p0, p1, p2, p3);
         }
 
         /// <summary>
@@ -57,7 +53,7 @@ namespace 椭圆路径研究
         /// <param name="p1">贝塞尔控制点1</param>
         /// <param name="p2">贝塞尔控制点2</param>
         /// <param name="p3">圆弧终点</param>
-        public static (PointF, PointF, PointF, PointF) GetEllipseArcBezierPoints(
+        public static BezierPoints GetEllipseArcBezierPoints(
             PointF center, float rx, float ry,
             float startRad, float thetaRad)
         {
@@ -87,7 +83,76 @@ namespace 椭圆路径研究
             float dy3 = -ry * (float)k * (float)Math.Cos(a3);
             var p2 = new PointF(x3 + dx3, y3 + dy3);
 
-            return (p0, p1, p2, p3);
+            return new BezierPoints(p0, p1, p2, p3);
+        }
+
+        /// <summary>
+        /// Catmull-Rom / Cardinal样条转三次贝塞尔四点
+        /// </summary>
+        /// <param name="vm1">V[i-1]</param>
+        /// <param name="v0">V[i] 曲线起点</param>
+        /// <param name="v1">V[i+1] 曲线终点</param>
+        /// <param name="v2">V[i+2]</param>
+        /// <param name="s">张力，Catmull-Rom标准0.5</param>
+        /// <param name="p0">贝塞尔起点</param>
+        /// <param name="p1">贝塞尔控制点1</param>
+        /// <param name="p2">贝塞尔控制点2</param>
+        /// <param name="p3">贝塞尔终点</param>
+        public static void CardinalToBezier(
+            PointF vm1, PointF v0, PointF v1, PointF v2, float s,
+            out PointF p0, out PointF p1, out PointF p2, out PointF p3)
+        {
+            p0 = v0;
+            p3 = v1;
+
+            float k = s / 3f;
+            // P1 = v0 + k*(v1 - vm1)
+            float p1x = v0.X + k * (v1.X - vm1.X);
+            float p1y = v0.Y + k * (v1.Y - vm1.Y);
+            p1 = new PointF(p1x, p1y);
+
+            // P2 = v1 - k*(v2 - v0)
+            float p2x = v1.X - k * (v2.X - v0.X);
+            float p2y = v1.Y - k * (v2.Y - v0.Y);
+            p2 = new PointF(p2x, p2y);
+        }
+
+        public static void BezierToCardinal(
+            PointF p0, PointF p1, PointF p2, PointF p3, float s,
+            out PointF vm1, out PointF v0, out PointF v1, out PointF v2)
+        {
+            v0 = p0;
+            v1 = p3;
+            float k = 3f / s;
+
+            // V[i-1] = v1 - k*(p1 - v0)
+            float vm1x = v1.X - k * (p1.X - v0.X);
+            float vm1y = v1.Y - k * (p1.Y - v0.Y);
+            vm1 = new PointF(vm1x, vm1y);
+
+            // V[i+2] = v0 + k*(v1 - p2)
+            float v2x = v0.X + k * (v1.X - p2.X);
+            float v2y = v0.Y + k * (v1.Y - p2.Y);
+            v2 = new PointF(v2x, v2y);
+        }
+    }
+
+    /// <summary>
+    /// 三段贝塞尔曲线结构
+    /// </summary>
+    public struct BezierPoints
+    {
+        public PointF P0 { get; set; }
+        public PointF P1 { get; set; }
+        public PointF P2 { get; set; }
+        public PointF P3 { get; set; }
+
+        public BezierPoints(PointF p0, PointF p1, PointF p2, PointF p3)
+        {
+            P0 = p0;
+            P1 = p1;
+            P2 = p2;
+            P3 = p3;
         }
     }
 }

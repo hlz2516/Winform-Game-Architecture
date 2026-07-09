@@ -143,7 +143,7 @@ namespace CoreLib
                 // 绘制Region外边框
                 g.DrawPath(borderPen, rotatedRegion);
                 //绘制旋转中心
-                g.DrawEllipse(borderPen, rotateCenter.X, rotateCenter.Y, 4, 4);
+                g.DrawEllipse(borderPen, rotateCenter.X-2, rotateCenter.Y-2, 4, 4);
             }
         }
 

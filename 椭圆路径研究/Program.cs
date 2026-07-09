@@ -16,7 +16,7 @@ namespace 椭圆路径研究
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FrmCtrlPntScaleCmp());
+            Application.Run(new FrmEncapsulationTest());
         }
     }
 }
