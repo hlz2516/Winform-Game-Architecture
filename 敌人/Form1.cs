@@ -26,12 +26,21 @@ namespace 敌人
 
             var body = new TriangleEnemy();
             body.Name = "enemy";
-            body.Left = 400;
-            body.Top = 400;
+            body.Left = 200;
+            body.Top = 200;
             body.SetRegion();
             this.Controls.Add(body);
-            body.StartRotate();
+            body.StartMove();
             body.Show();
+
+            var drillbit = new DrillBitEnemy();
+            drillbit.Name = "drillbit";
+            drillbit.Left = 600;
+            drillbit.Top = 200;
+            drillbit.SetRegion();
+            this.Controls.Add(drillbit);
+            drillbit.StartMove();
+            drillbit.Show();
         }
     }
 }

@@ -51,7 +51,7 @@ namespace 碰撞检测
             triangle.Top = 100;
             triangle.SetRegion();
             this.Controls.Add(triangle);
-            triangle.StartRotate();
+            triangle.StartMove();
             triangle.Show();
             controls.Add(triangle);
 

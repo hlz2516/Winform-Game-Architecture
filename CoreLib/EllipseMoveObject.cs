@@ -1,101 +1,13 @@
-﻿using CoreLib.Interfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace CoreLib
 {
-    public class EllipseMoveObject : BaseObject, IMove
+    public abstract class EllipseMoveObject : MoveBaseObject
     {
-        public float ScaleFactor { get; set; } = 1;
-        private float rotateAngle;
-        public float RotateAngle
-        {
-            get => rotateAngle;
-            set
-            {
-                if (rotateAngle != value)
-                {
-                    moveDirection = rotateAngle = value;
-                }
-            }
-        }
-        public float MoveSpeed { get; set; } = 4;
-        private float moveDirection;
-        public float MoveDirection
-        {
-            get => moveDirection;
-            set
-            {
-                if (moveDirection != value)
-                {
-                    rotateAngle = moveDirection = value;
-                }
-            }
-        }
-        private GraphicsPath rotatedVertexes;
-        public GraphicsPath RotatedVertexes => rotatedVertexes;
-        private GraphicsPath originVertexes;
-        public GraphicsPath OriginVertexes => originVertexes;
-        private PointF currPosF;
-        public PointF CurrPosF => currPosF;
-
-        PointF rotateCenter; //一旦确定后不再改变
-        public PointF RotateCenter => rotateCenter;
-        public EllipseMoveObject()
-        {
-            originVertexes = new GraphicsPath();
-            rotatedVertexes = new GraphicsPath();
-        }
-
-        public virtual void MoveOneStep()
-        {
-            //计算这一次移动需要的偏移量，基于方向，速度（如果方向不变，直接调用上一次的偏移量）
-            var offset = TrigonometricFunctions.GetPointByAngle(0, 0, MoveSpeed, moveDirection);
-            //在上一次的理论位置加上这个偏移量，得到下一次的理论位置nextPosF，四舍五入得到整数坐标作为下一次实际位置更新，内存里更新currPosF = nextPosF
-            var nextPosF = PointF.Add(currPosF, offset.ToSizeF());
-            var realPos = new Point((int)Math.Round(nextPosF.X), (int)Math.Round(nextPosF.Y));
-            this.Left = realPos.X;
-            this.Top = realPos.Y;
-            this.Invalidate(this.Region);
-            currPosF = nextPosF;
-        }
-
-        public virtual void Rotate()
-        {
-            Matrix mat = new Matrix();
-            mat.RotateAt(RotateAngle, rotateCenter);
-            rotatedVertexes = originVertexes.Clone() as GraphicsPath;
-            rotatedVertexes.Transform(mat);
-            this.Region = new Region(rotatedVertexes);
-            this.Invalidate(this.Region);
-        }
-
-        /// <summary>
-        /// 实现时必须调用SetRegionInner输入贝塞尔曲线列表，以实现Region设置，旋转和移动
-        /// </summary>
-        public void SetRegion()
-        {
-            BezierPoints[] ellipse = new BezierPoints[4];
-            PointF center = new PointF(Width * ScaleFactor / 2, Height * ScaleFactor / 2);
-            float xRadius = Width * ScaleFactor / 2;
-            float yRadius = Height * ScaleFactor / 4;
-            float startAngle = 0; // 起始角度
-            float sweepAngle = (float)(Math.PI / 2); // 扫过角度
-            for (int i = 0; i < 4; i++)
-            {
-                ellipse[i] = ArcBezierPointsHelper.GetEllipseArcBezierPoints(center, xRadius,yRadius, startAngle, sweepAngle);
-                startAngle += sweepAngle;
-            }
-            SetRegionInner(ellipse);
-        }
-
         protected virtual void SetRegionInner(BezierPoints[] points)
         {
             var _rotateCenter = GetRotateCenter(points);
@@ -108,20 +20,16 @@ namespace CoreLib
             List<PointF> bezierPoints = new List<PointF>();
             for (int i = 0; i < points.Length; i++)
             {
+                points[i].P0 = PointF.Add(points[i].P0, offset);
+                points[i].P1 = PointF.Add(points[i].P1, offset);
+                points[i].P2 = PointF.Add(points[i].P2, offset);
+                points[i].P3 = PointF.Add(points[i].P3, offset);
                 if (i == 0)
                 {
-                    points[i].P0 = PointF.Add(points[i].P0, offset);
-                    points[i].P1 = PointF.Add(points[i].P1, offset);
-                    points[i].P2 = PointF.Add(points[i].P2, offset);
-                    points[i].P3 = PointF.Add(points[i].P3, offset);
                     bezierPoints.AddRange(new PointF[] { points[i].P0 , points[i].P1 , points[i].P2 , points[i].P3 });
                 }
                 else
                 {
-                    points[i].P0 = PointF.Add(points[i].P0, offset);
-                    points[i].P1 = PointF.Add(points[i].P1, offset);
-                    points[i].P2 = PointF.Add(points[i].P2, offset);
-                    points[i].P3 = PointF.Add(points[i].P3, offset);
                     bezierPoints.AddRange(new PointF[] { points[i].P1, points[i].P2, points[i].P3 });  //数组长度为4+3N
                 }
             }
@@ -136,7 +44,7 @@ namespace CoreLib
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            PaintRotatedRegion(e, rotatedVertexes);
+            PaintRegionInner(e, rotatedVertexes);
         }
 
         protected virtual PointF GetRotateCenter(BezierPoints[] bezierPoints)
@@ -144,7 +52,7 @@ namespace CoreLib
             return new PointF(Width * ScaleFactor / 2, Height * ScaleFactor / 2);
         }
 
-        protected virtual void PaintRotatedRegion(PaintEventArgs e, GraphicsPath rotatedRegion)
+        protected override void PaintRegionInner(PaintEventArgs e, GraphicsPath rotatedRegion)
         {
             Graphics g = e.Graphics;
             g.SmoothingMode = SmoothingMode.AntiAlias;

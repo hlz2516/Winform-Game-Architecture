@@ -3,7 +3,7 @@ using System.Drawing;
 
 namespace CoreLib
 {
-    public class ArcBezierPointsHelper
+    public class CurveHelper
     {
         public static BezierPoints GetArcBezierPoints(
             PointF center, float r, float startRad, float thetaRad)

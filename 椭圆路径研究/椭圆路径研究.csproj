@@ -47,6 +47,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ArcBezierPointsHelper.cs" />
+    <Compile Include="CircleEnemy.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="FrmBezier.cs">
       <SubType>Form</SubType>
     </Compile>
