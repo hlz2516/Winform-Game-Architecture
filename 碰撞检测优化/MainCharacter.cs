@@ -58,9 +58,9 @@ namespace 碰撞检测优化
                         RotateAngle = 360 - 45;
                     }
                     Rotate();
+                    CheckRegionCollision();
                     MoveOneStep();
                     MapManager.UpdateObjectPosition(this);
-                    CheckRegionCollision();
                     return;
                 }
             }
@@ -83,9 +83,9 @@ namespace 碰撞检测优化
             }
             MoveSpeed = DefaultMoveSpeed;
             Rotate();
+            CheckRegionCollision();
             MoveOneStep();
             MapManager.UpdateObjectPosition(this);
-            CheckRegionCollision();
         }
 
         public event Action<List<Point>> NotifyContainerRefreshDetectedRegion;
