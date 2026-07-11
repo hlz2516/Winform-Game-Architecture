@@ -108,7 +108,7 @@ namespace 碰撞检测优化
                     {
                         if (ctrl is Wall wall)
                         {
-                            //如果根据当前朝向继续移动下一步仍然是碰撞状态，则不移动，否则设置回默认速度
+                            //如果根据当前朝向继续移动下一步是碰撞状态，则不移动，否则设置回默认速度
                             var nextOffset = TrigonometricFunctions.GetPointByAngle(0, 0, MoveSpeed, RotateAngle);
                             var nextPosF = PointF.Add(CurrPosF, nextOffset.ToSizeF());
                             var realNextPos = new Point((int)Math.Round(nextPosF.X), (int)Math.Round(nextPosF.Y));
