@@ -10,7 +10,7 @@ namespace CoreLib
     public class KeyInputTrigger
     {
         public static KeyInputTrigger Instance { get; } = new KeyInputTrigger();
-
+        private static object lockObj = new object();
         private ConcurrentQueue<KeyWrapper> inputKeys = new ConcurrentQueue<KeyWrapper>(); 
         //对于同一个键，可以支持绑定多个action
         private Dictionary<Keys, List<Action<KeyWrapper>>> keyActions = new Dictionary<Keys, List<Action<KeyWrapper>>>();
@@ -52,14 +52,17 @@ namespace CoreLib
         public void InputKey(KeyWrapper key)
         {
             //inputKeys.Enqueue(key);
-            if (inputKeys.Count == 0)
+            lock (lockObj)
             {
+                if (inputKeys.Count == 0)
+                {
+                    inputKeys.Enqueue(key);
+                    return;
+                }
+                if (inputKeys.Last().Equals(key))
+                    return;
                 inputKeys.Enqueue(key);
-                return;
             }
-            if (inputKeys.Last().Equals(key))
-                return;
-            inputKeys.Enqueue(key);
         }
 
         public void Register(Keys key,Action<KeyWrapper> action)

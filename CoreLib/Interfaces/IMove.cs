@@ -37,6 +37,7 @@ namespace CoreLib.Interfaces
 
     public interface IMove : IRegion
     {
+        bool MoveEnabled { get; set; }
         float MoveSpeed { get; set; }
         float MoveDirection { get; set; }
         PointF CurrPosF { get; }

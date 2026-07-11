@@ -31,12 +31,33 @@ namespace CoreLib
                 reg2.Transform(m2);
 
                 // 判断两个区域是否存在交集
+                reg1.Intersect(reg2); 
+                return !reg1.IsEmpty(Graphics.FromHwnd(c1.Handle));
+            }
+        }
+
+        public static bool CheckRegionCollision(Control c1, Region r2, Point r2p)
+        {
+            // 复制区域避免修改原控件Region
+            using (Region reg1 = c1.Region.Clone())
+            using (Region reg2 = r2.Clone())
+            {
+                // 偏移Region到统一屏幕坐标
+                Matrix m1 = new Matrix();
+                m1.Translate(c1.Left, c1.Top);
+                reg1.Transform(m1);
+
+                Matrix m2 = new Matrix();
+                m2.Translate(r2p.X, r2p.Y);
+                reg2.Transform(m2);
+
+                // 判断两个区域是否存在交集
                 reg1.Intersect(reg2);
                 return !reg1.IsEmpty(Graphics.FromHwnd(c1.Handle));
             }
         }
 
-        public static bool CheckRegionsCollision(Control c1,IEnumerable<Control> ctrls,out List<Control> collisionCtrls)
+        public static bool CheckRegionsCollision(Control c1, IEnumerable<Control> ctrls, out List<Control> collisionCtrls)
         {
             collisionCtrls = null;
 
@@ -45,7 +66,7 @@ namespace CoreLib
                 return false;
             }
 
-            if (ctrls.Count() == 0 || ctrls.Any(x=>x is null || x.Region is null))
+            if (ctrls.Count() == 0 || ctrls.Any(x => x is null || x.Region is null))
             {
                 return false;
             }

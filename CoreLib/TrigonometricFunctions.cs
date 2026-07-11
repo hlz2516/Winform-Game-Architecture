@@ -20,5 +20,22 @@ namespace CoreLib
 
             return new PointF(x, y);
         }
+
+        /// <summary>
+        /// 角度 转 弧度
+        /// 公式：rad = degree * Math.PI / 180
+        /// </summary>
+        /// <param name="degree">角度值，如90、180</param>
+        /// <returns>对应弧度</returns>
+        public static double DegreeToRad(double degree)
+        {
+            return degree * Math.PI / 180.0;
+        }
+
+        // 反向：弧度转角度
+        public static double RadToDegree(double rad)
+        {
+            return rad * 180.0 / Math.PI;
+        }
     }
 }

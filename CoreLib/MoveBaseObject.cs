@@ -12,6 +12,8 @@ namespace CoreLib
 {
     public abstract class MoveBaseObject : BaseObject, IMove
     {
+        public static float DefaultMoveSpeed { get; } = 4;
+
         protected PointF rotateCenter;
         public PointF RotateCenter { get => rotateCenter; }
         public float ScaleFactor { get; set; } = 1;
@@ -27,7 +29,7 @@ namespace CoreLib
                 }
             }
         }
-        public float MoveSpeed { get; set; } = 4;
+        public float MoveSpeed { get; set; } = DefaultMoveSpeed;
         private float moveDirection;
         public float MoveDirection
         {
@@ -46,9 +48,12 @@ namespace CoreLib
         public GraphicsPath OriginVertexes => originVertexes;
         protected PointF currPosF;
         public PointF CurrPosF => currPosF;
-
+        public bool MoveEnabled { get; set; } = true;
         public virtual void MoveOneStep()
         {
+            if (!MoveEnabled)
+                return;
+            
             //计算这一次移动需要的偏移量，基于方向，速度（如果方向不变，直接调用上一次的偏移量）
             var offset = TrigonometricFunctions.GetPointByAngle(0, 0, MoveSpeed, moveDirection);
             //在上一次的理论位置加上这个偏移量，得到下一次的理论位置nextPosF，四舍五入得到整数坐标作为下一次实际位置更新，内存里更新currPosF = nextPosF
