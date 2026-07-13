@@ -51,10 +51,17 @@
     <Compile Include="EllipseMoveObject.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Entity\MainCharacter.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Entity\Wall.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Interfaces\IMove.cs" />
     <Compile Include="Interfaces\IRecvKeyInput.cs" />
     <Compile Include="KeyInputTrigger.cs" />
     <Compile Include="KeyWrapper.cs" />
+    <Compile Include="MapManager.cs" />
     <Compile Include="MoveBaseObject.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -65,5 +72,6 @@
     </Compile>
     <Compile Include="TrigonometricFunctions.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

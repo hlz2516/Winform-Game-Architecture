@@ -86,4 +86,18 @@ namespace CoreLib
             }
         }
     }
+
+    /// <summary>
+    /// 方向键输入枚举，用于表示当前按下的方向键状态，可以组合使用
+    /// 0表示
+    /// </summary>
+    [Flags]
+    public enum MoveDirectionInput
+    {
+        None = 0b0000,
+        Left = 0b0001,
+        Up = 0b0010,
+        Right = 0b0100,
+        Down = 0b1000
+    }
 }
