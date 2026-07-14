@@ -93,13 +93,8 @@ namespace 碰撞检测优化
         private void CheckRegionCollision()
         {
             List<Point> regions = new List<Point>();
-            bool outterbrk = false;
             foreach (var item in MapManager.GetSurroundObjects(this))
             {
-                if (outterbrk)
-                {
-                    break;
-                }
                 var realPos = MapManager.CalculRealPosition(item.Key);
                 regions.Add(realPos);
                 foreach (var ctrl in item.Value)
