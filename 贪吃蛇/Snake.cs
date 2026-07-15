@@ -20,7 +20,14 @@ namespace 贪吃蛇
         private int PenWidth = 20;
         private LinkedList<PointF> bodyLine = new LinkedList<PointF>();
         private Timer moveTimer = new Timer();
-
+        /// <summary>
+        /// 初始蛇整体朝向
+        /// </summary>
+        public override float RotateAngle { get => rotateAngle; set => rotateAngle = value; }
+        /// <summary>
+        /// 头移动方向
+        /// </summary>
+        public override float MoveDirection { get => moveDirection; set => moveDirection = value; }
         public Snake()
         {
             moveTimer.Interval = 100;
@@ -95,7 +102,15 @@ namespace 贪吃蛇
 
         public override void Rotate()
         {
+            rotateCenter = CalculateRotateCenter(originVertexes.PathPoints);
+            Matrix mat = new Matrix();
+            mat.RotateAt(RotateAngle, rotateCenter);
+            rotatedVertexes = originVertexes.Clone() as GraphicsPath;
+            rotatedVertexes.Transform(mat);
+            ///重新计算包围盒和控件位置
             
+            this.Region = new Region(rotatedVertexes);
+            this.Invalidate(this.Region);
         }
 
         public override void SetRegion()
@@ -131,7 +146,7 @@ namespace 贪吃蛇
             widenPen.LineJoin = LineJoin.Round;
             originVertexes.Widen(widenPen);
             this.Region = new Region(originVertexes);
-            this.Invalidate(this.Region);
+            //this.Invalidate(this.Region);
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -144,6 +159,18 @@ namespace 贪吃蛇
             originVertexes.Widen(widenPen);
             e.Graphics.DrawPath(widenPen, originVertexes);
             widenPen.Dispose();
+        }
+
+        protected virtual PointF CalculateRotateCenter(PointF[] points)
+        {
+            float centerX = 0;
+            float centerY = 0;
+            foreach (PointF point in points)
+            {
+                centerX += point.X;
+                centerY += point.Y;
+            }
+            return new PointF(centerX / points.Count(), centerY / points.Count());
         }
 
         protected override void PaintRegionInner(PaintEventArgs e, GraphicsPath rotatedRegion)

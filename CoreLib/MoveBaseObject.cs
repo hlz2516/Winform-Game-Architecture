@@ -17,8 +17,8 @@ namespace CoreLib
         protected PointF rotateCenter;
         public PointF RotateCenter { get => rotateCenter; }
         public float ScaleFactor { get; set; } = 1;
-        private float rotateAngle;
-        public float RotateAngle
+        protected float rotateAngle;
+        public virtual float RotateAngle
         {
             get => rotateAngle;
             set
@@ -30,8 +30,8 @@ namespace CoreLib
             }
         }
         public float MoveSpeed { get; set; } = DefaultMoveSpeed;
-        private float moveDirection;
-        public float MoveDirection
+        protected float moveDirection;
+        public virtual float MoveDirection
         {
             get => moveDirection;
             set
