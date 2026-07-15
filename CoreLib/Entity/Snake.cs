@@ -1,17 +1,12 @@
 ﻿using CoreLib;
-using CoreLib.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Xml.Linq;
 
-namespace 贪吃蛇
+namespace CoreLib.Entity
 {
     public class Snake : MoveBaseObject
     {
@@ -19,7 +14,6 @@ namespace 贪吃蛇
 
         private int PenWidth = 20;
         private LinkedList<PointF> bodyLine = new LinkedList<PointF>();
-        private Timer moveTimer = new Timer();
         /// <summary>
         /// 初始蛇整体朝向
         /// </summary>
@@ -28,28 +22,10 @@ namespace 贪吃蛇
         /// 头移动方向
         /// </summary>
         public override float MoveDirection { get => moveDirection; set => moveDirection = value; }
+
         public Snake()
         {
-            moveTimer.Interval = 100;
-            moveTimer.Tick += MoveAction;
-        }
 
-        public void StartMove() => moveTimer.Start();
-
-        int time = 0;
-        private void MoveAction(object sender, EventArgs e)
-        {
-            switch (time)
-            {
-                case 1:MoveDirection = 90; break;
-                case 10:MoveDirection = 180; break;
-                case 20:MoveDirection = 270;break;
-                case 30 :MoveDirection = 0;break;
-                default:
-                    break;
-            }
-            MoveOneStep();
-            time++;
         }
 
         public override void MoveOneStep()
@@ -89,14 +65,14 @@ namespace 贪吃蛇
             this.Width = box.Width;
             this.Height = box.Height;
             //使用widen方法把包围盒的区域扩大到蛇的宽度，作为控件的Region
-            originVertexes.Reset();
-            originVertexes.AddLines(bodyLine.ToArray());
+            rotatedVertexes.Reset();
+            rotatedVertexes.AddLines(bodyLine.ToArray());
             Pen widenPen = new Pen(Color.Transparent, PenWidth);
             widenPen.StartCap = LineCap.Round;
             widenPen.EndCap = LineCap.Round;
             widenPen.LineJoin = LineJoin.Round;
-            originVertexes.Widen(widenPen);
-            this.Region = new Region(originVertexes);
+            rotatedVertexes.Widen(widenPen);
+            this.Region = new Region(rotatedVertexes);
             this.Invalidate(this.Region);
         }
 
@@ -107,8 +83,42 @@ namespace 贪吃蛇
             mat.RotateAt(RotateAngle, rotateCenter);
             rotatedVertexes = originVertexes.Clone() as GraphicsPath;
             rotatedVertexes.Transform(mat);
-            ///重新计算包围盒和控件位置
-            
+            //重建bodyLine，使用rotatedVertexes的PathPoints作为新的bodyLine
+            bodyLine.Clear();
+            foreach (var pt in rotatedVertexes.PathPoints)
+            {
+                bodyLine.AddLast(pt);
+            }
+            //遍历所有points，得到minx,miny,maxx,maxy，计算出当前蛇的包围盒和坐标位置，
+            float minX = bodyLine.Min(p => p.X);
+            float minY = bodyLine.Min(p => p.Y);
+            float maxX = bodyLine.Max(p => p.X);
+            float maxY = bodyLine.Max(p => p.Y);
+            Rectangle box = new Rectangle((int)minX - PenWidth / 2, (int)(minY - PenWidth / 2),
+                (int)(maxX - minX + PenWidth), (int)(maxY - minY + PenWidth));
+            //先把包围盒整体移动到（0，0），再把控件的Location进行反向偏移
+            Point _offset = new Point((int)box.X, (int)box.Y);
+            var node = bodyLine.First;
+            while (node != null)
+            {
+                PointF oldPt = node.Value;
+                node.Value = new PointF(oldPt.X - box.X, oldPt.Y - box.Y);
+                node = node.Next;
+            }
+
+            currPosF = bodyLine.First.Value;
+            this.Left = this.Left + _offset.X;
+            this.Top = this.Top + _offset.Y;
+            this.Width = box.Width;
+            this.Height = box.Height;
+            //使用widen方法把包围盒的区域扩大到蛇的宽度，作为控件的Region
+            rotatedVertexes.Reset();
+            rotatedVertexes.AddLines(bodyLine.ToArray());
+            Pen widenPen = new Pen(Color.Transparent, PenWidth);
+            widenPen.StartCap = LineCap.Round;
+            widenPen.EndCap = LineCap.Round;
+            widenPen.LineJoin = LineJoin.Round;
+            rotatedVertexes.Widen(widenPen);
             this.Region = new Region(rotatedVertexes);
             this.Invalidate(this.Region);
         }
@@ -122,31 +132,7 @@ namespace 贪吃蛇
                 bodyLine.AddFirst(new PointF(PenWidth / 2, i + PenWidth / 2));
             }
             originVertexes.AddLines(bodyLine.ToArray());
-            //currPosF意为头在region里的相对位置
-            currPosF = bodyLine.First.Value;
-            ////遍历所有points，得到minx,miny,maxx,maxy，计算出当前蛇的包围盒和坐标位置，
-            //float minX = bodyLine.Min(p => p.X);
-            //float minY = bodyLine.Min(p => p.Y);
-            //float maxX = bodyLine.Max(p => p.X);
-            //float maxY = bodyLine.Max(p => p.Y);
-            //Rectangle box = new Rectangle((int)minX - PenWidth / 2, (int)(minY - PenWidth / 2),
-            //    (int)(maxX - minX + PenWidth), (int)(maxY - minY + PenWidth));
-            ////先把包围盒的位置移动到（0，0），再把控件的Location进行反向偏移
-            //Point _offset = new Point((int)box.X, (int)box.Y);
-            //box.Offset(-box.X, -box.Y);
-            //this.Left = this.Left + _offset.X;
-            //this.Top = this.Top + _offset.Y;
             this.Width = PenWidth;
-            //使用widen方法把包围盒的区域扩大到蛇的宽度，作为控件的Region
-            originVertexes.Reset();
-            originVertexes.AddLines(bodyLine.ToArray());
-            Pen widenPen = new Pen(Color.Transparent, PenWidth);
-            widenPen.StartCap = LineCap.Round;
-            widenPen.EndCap = LineCap.Round;
-            widenPen.LineJoin = LineJoin.Round;
-            originVertexes.Widen(widenPen);
-            this.Region = new Region(originVertexes);
-            //this.Invalidate(this.Region);
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -156,8 +142,17 @@ namespace 贪吃蛇
             widenPen.StartCap = LineCap.Round;
             widenPen.EndCap = LineCap.Round;
             widenPen.LineJoin = LineJoin.Round;
-            originVertexes.Widen(widenPen);
-            e.Graphics.DrawPath(widenPen, originVertexes);
+            rotatedVertexes.Widen(widenPen);
+            e.Graphics.DrawPath(widenPen, rotatedVertexes);
+            //在最后一个点上画一个圆，表示蛇头
+            PointF headPoint = bodyLine.First.Value;
+            PointF secPoint = bodyLine.First.Next.Value;
+            Pen pen = new Pen(Color.Blue, 4);
+            pen.StartCap = LineCap.Round;
+            pen.EndCap = LineCap.Round;
+            pen.LineJoin = LineJoin.Round;
+            e.Graphics.DrawLine(pen, headPoint, secPoint);
+            pen.Dispose();
             widenPen.Dispose();
         }
 

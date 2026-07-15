@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CoreLib;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,36 +14,59 @@ namespace 贪吃蛇
 {
     public partial class Form1 : Form
     {
-        Snake snake;
+        SnakeCharacter snake;
         public Form1()
         {
             InitializeComponent();
-            snake = new Snake();
+            // 开启窗体双缓冲全套
+            SetStyle(
+                ControlStyles.UserPaint |
+                ControlStyles.AllPaintingInWmPaint |
+                ControlStyles.DoubleBuffer,
+                true);
+            UpdateStyles(); // 立即生效样式
+
+            snake = new SnakeCharacter();
             snake.Left = 200;
             snake.Top = 200;
             snake.SetRegion();
             this.Controls.Add(snake);
+            //设置初始朝向
+            snake.MoveDirection = snake.RotateAngle = 270;
+            snake.Rotate();
             snake.StartMove();
+
+            KeyInputTrigger.Instance.Register(snake.GetCurrentKeyInput, Keys.Up, Keys.Down, Keys.Left, Keys.Right);
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
-            //// Create a path and add two ellipses.
-            //GraphicsPath myPath = new GraphicsPath();
-            //myPath.AddEllipse(0, 0, 100, 100);
-            //myPath.AddEllipse(100, 0, 100, 100);
 
-            //// Draw the original ellipses to the screen in black.
-            //e.Graphics.DrawPath(Pens.Black, myPath);
+        }
 
-            //// Widen the path.
-            //Pen widenPen = new Pen(Color.Black, 10);
-            //Matrix widenMatrix = new Matrix();
-            //widenMatrix.Translate(50, 50);
-            //myPath.Widen(widenPen, widenMatrix, 1.0f);
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            KeyInputTrigger.Instance.InputKey(new KeyWrapper(e, KeyState.KeyPressed));
+        }
 
-            //// Draw the widened path to the screen in red.
-            //e.Graphics.FillPath(new SolidBrush(Color.Red), myPath);
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            KeyInputTrigger.Instance.InputKey(new KeyWrapper(e, KeyState.KeyUp));
+        }
+
+        protected override bool ProcessDialogKey(Keys keyData)
+        {
+            switch (keyData)
+            {
+                case Keys.Up:
+                case Keys.Down:
+                case Keys.Left:
+                case Keys.Right:
+                    // 手动触发按键事件
+                    OnKeyDown(new KeyEventArgs(keyData));
+                    return true; // 返回true：告知系统按键已处理，不再执行焦点跳转
+            }
+            return base.ProcessDialogKey(keyData);
         }
     }
 }
