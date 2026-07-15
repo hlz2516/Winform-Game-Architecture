@@ -1,5 +1,4 @@
-﻿using CoreLib;
-using CoreLib.Interfaces;
+﻿using CoreLib.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
