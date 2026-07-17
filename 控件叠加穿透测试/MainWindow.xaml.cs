@@ -23,6 +23,12 @@ namespace 控件叠加穿透测试
         public MainWindow()
         {
             InitializeComponent();
+            CompositionTarget.Rendering += CompositionTarget_Rendering;
+        }
+
+        private void CompositionTarget_Rendering(object sender, EventArgs e)
+        {
+            
         }
     }
 }

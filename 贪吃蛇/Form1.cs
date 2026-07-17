@@ -15,6 +15,8 @@ namespace 贪吃蛇
     public partial class Form1 : Form
     {
         SnakeCharacter snake;
+        TextObject testTxt;
+
         public Form1()
         {
             InitializeComponent();
@@ -25,6 +27,13 @@ namespace 贪吃蛇
                 ControlStyles.DoubleBuffer,
                 true);
             UpdateStyles(); // 立即生效样式
+
+            testTxt = new TextObject();
+            testTxt.Text = "测试文本";
+            testTxt.Left = 300;
+            testTxt.Top = 200;
+            this.Controls.Add(testTxt);
+            testTxt.Show();
 
             snake = new SnakeCharacter();
             snake.Left = 200;
