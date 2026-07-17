@@ -68,5 +68,10 @@ namespace 贪吃蛇
             }
             return base.ProcessDialogKey(keyData);
         }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

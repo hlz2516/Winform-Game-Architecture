@@ -1,0 +1,14 @@
+﻿<Window x:Class="控件叠加穿透测试.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:控件叠加穿透测试"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Canvas Margin="0,0,0,-3">
+        <Button Content="Button" Height="92" Canvas.Left="166.059" Canvas.Top="151.844" Width="126" Background="#FFE61111"/>
+        <Button Content="Button" Height="92" Canvas.Left="292.959" Canvas.Top="151.844" Width="127" Background="#FF177509" HorizontalAlignment="Left" VerticalAlignment="Center"/>
+        <Label Content="Label" Height="36" Canvas.Left="248.064" Canvas.Top="161.844" Width="93" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Panel.ZIndex="2"/>
+    </Canvas>
+</Window>
